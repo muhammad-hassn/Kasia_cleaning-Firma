@@ -1,23 +1,1130 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kasia Cleaning Website MVP</title>
+    <title>Kasia_cleaning — Profesjonalne sprzątanie</title>
     <meta name="description" content="Profesjonalne sprzątanie mieszkań i domów. Skontaktuj się z Kasia_cleaning i ustal dogodny termin usługi." />
     <meta property="og:title" content="Kasia_cleaning — Profesjonalne sprzątanie" />
     <meta property="og:description" content="Profesjonalne sprzątanie mieszkań i domów. Skontaktuj się z Kasia_cleaning i ustal dogodny termin usługi." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://images.pexels.com/photos/7587773/pexels-photo-7587773.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://images.pexels.com/photos/7587773/pexels-photo-7587773.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" />
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN (with custom configuration) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ivory: '#faf8f4',
+              beige: '#f0ebe2',
+              sand: '#e6dfd2',
+              sage: {
+                DEFAULT: '#8a9a7b',
+                light: '#a3b394',
+                dark: '#6d7d5e',
+              },
+              charcoal: {
+                DEFAULT: '#2b2826',
+                light: '#3d3a37',
+                dark: '#1c1a19',
+              },
+            },
+            fontFamily: {
+              heading: ['"Cormorant Garamond"', 'serif'],
+              body: ['Inter', 'sans-serif'],
+            },
+            spacing: {
+              18: '4.5rem',
+              88: '22rem',
+            },
+            maxWidth: {
+              editorial: '1400px',
+            },
+            transitionTimingFunction: {
+              elegant: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+
+  <body class="bg-ivory text-charcoal font-body font-normal leading-relaxed selection:bg-sage/30 selection:text-charcoal">
+    <!-- Custom Cursor -->
+    <div id="cursor-dot" class="cursor-dot"></div>
+    <div id="cursor-ring" class="cursor-ring"></div>
+
+    <!-- Header Navbar -->
+    <header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent py-5">
+      <nav class="max-w-editorial mx-auto px-6 lg:px-10 flex items-center justify-between">
+        <a href="index.html" id="nav-brand" class="font-heading text-xl lg:text-2xl tracking-tight transition-colors duration-300 text-ivory">
+          Kasia_cleaning
+        </a>
+
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="uslugi.html" class="nav-link-item link-underline text-sm tracking-wide transition-colors duration-300 text-ivory/90 hover:text-ivory">Usługi</a>
+          <a href="index.html#jak-to-dziala" class="nav-link-item link-underline text-sm tracking-wide transition-colors duration-300 text-ivory/90 hover:text-ivory">Jak to działa</a>
+          <a href="opinie.html" class="nav-link-item link-underline text-sm tracking-wide transition-colors duration-300 text-ivory/90 hover:text-ivory">Opinie</a>
+          <a href="o-nas.html" class="nav-link-item link-underline text-sm tracking-wide transition-colors duration-300 text-ivory/90 hover:text-ivory">O nas</a>
+          <a href="faq.html" class="nav-link-item link-underline text-sm tracking-wide transition-colors duration-300 text-ivory/90 hover:text-ivory">FAQ</a>
+          <a href="kontakt.html" class="nav-link-item link-underline text-sm tracking-wide transition-colors duration-300 text-ivory/90 hover:text-ivory">Kontakt</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button id="nav-booking-btn" data-open-modal class="hidden sm:inline-flex btn-primary text-xs px-5 py-2.5 bg-ivory/95 text-charcoal hover:bg-ivory">
+            Zamów sprzątanie
+          </button>
+          <button id="open-mobile-menu" class="lg:hidden text-ivory transition-colors" aria-label="Otwórz menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-[60] lg:hidden transition-opacity duration-300 opacity-0 pointer-events-none">
+      <div id="mobile-menu-overlay" class="absolute inset-0 bg-charcoal/40 backdrop-blur-sm"></div>
+      <div id="mobile-menu-panel" class="absolute right-0 top-0 bottom-0 w-[82%] max-w-sm bg-ivory flex flex-col transition-transform duration-400 ease-elegant translate-x-full">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-charcoal/10">
+          <span class="font-heading text-xl text-charcoal">Kasia_cleaning</span>
+          <button id="close-mobile-menu" class="text-charcoal" aria-label="Zamknij menu">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <div class="flex flex-col px-6 py-6 gap-1">
+          <a href="uslugi.html" class="mobile-nav-link text-left text-lg font-heading text-charcoal py-3 border-b border-charcoal/5 hover:text-sage-dark transition-colors">Usługi</a>
+          <a href="index.html#jak-to-dziala" class="mobile-nav-link text-left text-lg font-heading text-charcoal py-3 border-b border-charcoal/5 hover:text-sage-dark transition-colors">Jak to działa</a>
+          <a href="opinie.html" class="mobile-nav-link text-left text-lg font-heading text-charcoal py-3 border-b border-charcoal/5 hover:text-sage-dark transition-colors">Opinie</a>
+          <a href="o-nas.html" class="mobile-nav-link text-left text-lg font-heading text-charcoal py-3 border-b border-charcoal/5 hover:text-sage-dark transition-colors">O nas</a>
+          <a href="faq.html" class="mobile-nav-link text-left text-lg font-heading text-charcoal py-3 border-b border-charcoal/5 hover:text-sage-dark transition-colors">FAQ</a>
+          <a href="kontakt.html" class="mobile-nav-link text-left text-lg font-heading text-charcoal py-3 border-b border-charcoal/5 hover:text-sage-dark transition-colors">Kontakt</a>
+        </div>
+        <div class="mt-auto px-6 pb-8 flex flex-col gap-3">
+          <button data-open-modal class="btn-primary w-full">Zamów sprzątanie</button>
+          <a href="tel:+48791688048" class="btn-outline w-full text-center">Zadzwoń teraz</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Hero Section -->
+      <section id="hero-section" class="relative h-screen min-h-[640px] w-full overflow-hidden">
+        <div id="hero-bg" class="absolute inset-0 hero-bg-anim" style="will-change: transform;">
+          <img src="https://images.pexels.com/photos/7587773/pexels-photo-7587773.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Jasne, czyste wnętrze mieszkania z naturalnym światłem" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-charcoal/45"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-charcoal/30 via-transparent to-charcoal/40"></div>
+        </div>
+
+        <div class="relative h-full flex flex-col justify-center max-w-editorial mx-auto px-6 lg:px-10 pt-20">
+          <div class="max-w-3xl">
+            <p class="hero-eyebrow text-ivory/80 text-xs sm:text-sm tracking-[0.25em] uppercase mb-5">Profesjonalne sprzątanie</p>
+            <h1 class="font-heading text-ivory text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem] leading-[1.05] mb-6">
+              <span class="hero-line block">Czysty dom.</span>
+              <span class="hero-line hero-line-2 block italic font-medium">Spokojniejszy dzień.</span>
+            </h1>
+            <p class="hero-text text-ivory/85 text-base sm:text-lg max-w-xl leading-relaxed mb-8">
+              Profesjonalne sprzątanie mieszkań i domów. Ty odpoczywasz — my zajmujemy się resztą.
+            </p>
+            <div class="hero-text flex items-center gap-2 text-ivory/70 text-sm mb-8">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+              Obsługujemy klientów w Polsce
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 mb-10">
+              <button data-open-modal class="hero-btn hero-btn-1 btn-light">
+                Zamów sprzątanie
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+              <a href="uslugi.html" class="hero-btn hero-btn-2 btn-ghost-light">Zobacz usługi</a>
+            </div>
+
+            <!-- Trust rating -->
+            <div class="hero-rating flex items-center gap-4 mb-5">
+              <div class="flex items-center gap-1">
+                <i data-lucide="star" class="w-4 h-4 fill-[#faf8f4] text-[#faf8f4]"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-[#faf8f4] text-[#faf8f4]"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-[#faf8f4] text-[#faf8f4]"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-[#faf8f4] text-[#faf8f4]"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-[#faf8f4] text-[#faf8f4]"></i>
+              </div>
+              <span class="text-ivory text-sm font-medium">5.0 Google</span>
+              <span class="text-ivory/60 text-sm">6 opinii klientów</span>
+            </div>
+
+            <!-- Phone CTA -->
+            <div class="hero-phone flex items-center gap-3">
+              <a href="tel:+48791688048" class="inline-flex items-center gap-2 text-ivory hover:text-white transition-colors group">
+                <i data-lucide="phone" class="w-5 h-5 text-sage-light group-hover:scale-110 transition-transform"></i>
+                <span class="font-heading text-xl sm:text-2xl">+48 791 688 048</span>
+              </a>
+              <span class="text-ivory/30">|</span>
+              <a href="tel:+48791688048" class="text-ivory/80 hover:text-ivory text-sm link-underline transition-colors">Zadzwoń teraz</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 hero-phone">
+          <div class="w-px h-12 bg-ivory/40 mx-auto relative overflow-hidden">
+            <div class="absolute top-0 w-full h-4 bg-ivory animate-[scrollLine_2s_ease-in-out_infinite]"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust Strip Section -->
+      <section class="bg-charcoal py-8 reveal">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10">
+          <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
+            <div class="flex items-center gap-2">
+              <i data-lucide="star" class="w-[18px] h-[18px] fill-[#a3b394] text-[#a3b394]"></i>
+              <i data-lucide="star" class="w-[18px] h-[18px] fill-[#a3b394] text-[#a3b394]"></i>
+              <i data-lucide="star" class="w-[18px] h-[18px] fill-[#a3b394] text-[#a3b394]"></i>
+              <i data-lucide="star" class="w-[18px] h-[18px] fill-[#a3b394] text-[#a3b394]"></i>
+              <i data-lucide="star" class="w-[18px] h-[18px] fill-[#a3b394] text-[#a3b394]"></i>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-heading text-xl text-ivory">5.0 / 5</span>
+              <span class="text-ivory/50 text-sm tracking-wide">Google</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-heading text-xl text-ivory">6</span>
+              <span class="text-ivory/50 text-sm tracking-wide">opinii</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-heading text-xl text-ivory">Profesjonalna</span>
+              <span class="text-ivory/50 text-sm tracking-wide">obsługa</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-heading text-xl text-ivory">Łatwy</span>
+              <span class="text-ivory/50 text-sm tracking-wide">kontakt</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Section -->
+      <section id="uslugi" class="py-24 lg:py-32 bg-ivory">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10">
+          <div class="reveal mb-16">
+            <p class="text-xs tracking-[0.2em] uppercase text-sage-dark mb-4">Usługi</p>
+            <h2 class="font-heading text-4xl sm:text-5xl lg:text-6xl text-charcoal max-w-3xl text-balance mb-4">
+              Sprzątanie dopasowane do Twoich potrzeb.
+            </h2>
+            <p class="text-charcoal/60 text-lg max-w-xl">Wybierz usługę, a my zadbamy o resztę.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Service 1 -->
+            <article class="group reveal" style="transition-delay: 0ms;">
+              <div class="relative overflow-hidden bg-beige aspect-[4/3] mb-5 cursor-pointer" data-open-modal data-service-name="Sprzątanie mieszkań">
+                <img src="https://images.pexels.com/photos/7587773/pexels-photo-7587773.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Jasne, czyste wnętrze mieszkania w stylu skandynawskim" class="w-full h-full object-cover transition-transform duration-500 ease-elegant group-hover:scale-[1.04]" loading="lazy" />
+                <div class="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/10 transition-colors duration-400"></div>
+              </div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="font-heading text-2xl text-charcoal mb-2">Sprzątanie mieszkań</h3>
+                  <p class="text-charcoal/60 text-sm leading-relaxed">Dokładne sprzątanie mieszkań — jednorazowo lub regularnie.</p>
+                </div>
+                <button data-open-modal data-service-name="Sprzątanie mieszkań" class="shrink-0 mt-1 text-charcoal/40 group-hover:text-charcoal transition-all duration-300 group-hover:translate-x-1" aria-label="Zapytaj o usługę: Sprzątanie mieszkań">
+                  <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                </button>
+              </div>
+              <button data-open-modal data-service-name="Sprzątanie mieszkań" class="link-underline text-sm text-sage-dark mt-4 inline-flex items-center gap-1.5">
+                Zapytaj o usługę <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </article>
+
+            <!-- Service 2 -->
+            <article class="group reveal" style="transition-delay: 100ms;">
+              <div class="relative overflow-hidden bg-beige aspect-[4/3] mb-5 cursor-pointer" data-open-modal data-service-name="Sprzątanie domów">
+                <img src="https://images.pexels.com/photos/8146144/pexels-photo-8146144.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Przestronne, czyste wnętrze domu z otwartą kuchnią" class="w-full h-full object-cover transition-transform duration-500 ease-elegant group-hover:scale-[1.04]" loading="lazy" />
+                <div class="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/10 transition-colors duration-400"></div>
+              </div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="font-heading text-2xl text-charcoal mb-2">Sprzątanie domów</h3>
+                  <p class="text-charcoal/60 text-sm leading-relaxed">Kompleksowe sprzątanie przestrzeni domowych z dbałością o szczegóły.</p>
+                </div>
+                <button data-open-modal data-service-name="Sprzątanie domów" class="shrink-0 mt-1 text-charcoal/40 group-hover:text-charcoal transition-all duration-300 group-hover:translate-x-1" aria-label="Zapytaj o usługę: Sprzątanie domów">
+                  <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                </button>
+              </div>
+              <button data-open-modal data-service-name="Sprzątanie domów" class="link-underline text-sm text-sage-dark mt-4 inline-flex items-center gap-1.5">
+                Zapytaj o usługę <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </article>
+
+            <!-- Service 3 -->
+            <article class="group reveal" style="transition-delay: 200ms;">
+              <div class="relative overflow-hidden bg-beige aspect-[4/3] mb-5 cursor-pointer" data-open-modal data-service-name="Sprzątanie po remoncie">
+                <img src="https://images.pexels.com/photos/3616756/pexels-photo-3616756.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Pomieszczenie po pracach remontowych, gotowe do sprzątania" class="w-full h-full object-cover transition-transform duration-500 ease-elegant group-hover:scale-[1.04]" loading="lazy" />
+                <div class="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/10 transition-colors duration-400"></div>
+              </div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="font-heading text-2xl text-charcoal mb-2">Sprzątanie po remoncie</h3>
+                  <p class="text-charcoal/60 text-sm leading-relaxed">Pomoc w przywróceniu porządku po pracach remontowych.</p>
+                </div>
+                <button data-open-modal data-service-name="Sprzątanie po remoncie" class="shrink-0 mt-1 text-charcoal/40 group-hover:text-charcoal transition-all duration-300 group-hover:translate-x-1" aria-label="Zapytaj o usługę: Sprzątanie po remoncie">
+                  <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                </button>
+              </div>
+              <button data-open-modal data-service-name="Sprzątanie po remoncie" class="link-underline text-sm text-sage-dark mt-4 inline-flex items-center gap-1.5">
+                Zapytaj o usługę <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </article>
+
+            <!-- Service 4 -->
+            <article class="group reveal" style="transition-delay: 300ms;">
+              <div class="relative overflow-hidden bg-beige aspect-[4/3] mb-5 cursor-pointer" data-open-modal data-service-name="Sprzątanie przed / po wynajmie">
+                <img src="https://images.pexels.com/photos/6523269/pexels-photo-6523269.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Czysta, nowoczesna kuchnia gotowa dla nowych lokatorów" class="w-full h-full object-cover transition-transform duration-500 ease-elegant group-hover:scale-[1.04]" loading="lazy" />
+                <div class="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/10 transition-colors duration-400"></div>
+              </div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="font-heading text-2xl text-charcoal mb-2">Sprzątanie przed / po wynajmie</h3>
+                  <p class="text-charcoal/60 text-sm leading-relaxed">Przygotowanie mieszkania do nowych lokatorów lub po zakończeniu wynajmu.</p>
+                </div>
+                <button data-open-modal data-service-name="Sprzątanie przed / po wynajmie" class="shrink-0 mt-1 text-charcoal/40 group-hover:text-charcoal transition-all duration-300 group-hover:translate-x-1" aria-label="Zapytaj o usługę: Sprzątanie przed / po wynajmie">
+                  <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                </button>
+              </div>
+              <button data-open-modal data-service-name="Sprzątanie przed / po wynajmie" class="link-underline text-sm text-sage-dark mt-4 inline-flex items-center gap-1.5">
+                Zapytaj o usługę <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </article>
+
+            <!-- Service 5 -->
+            <article class="group reveal" style="transition-delay: 400ms;">
+              <div class="relative overflow-hidden bg-beige aspect-[4/3] mb-5 cursor-pointer" data-open-modal data-service-name="Sprzątanie biur">
+                <img src="https://images.pexels.com/photos/19866414/pexels-photo-19866414.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Minimalistyczna, czysta przestrzeń w stylu skandynawskim" class="w-full h-full object-cover transition-transform duration-500 ease-elegant group-hover:scale-[1.04]" loading="lazy" />
+                <div class="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/10 transition-colors duration-400"></div>
+              </div>
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="font-heading text-2xl text-charcoal mb-2">Sprzątanie biur</h3>
+                  <p class="text-charcoal/60 text-sm leading-relaxed">Profesjonalne utrzymanie czystości w przestrzeniach biurowych.</p>
+                </div>
+                <button data-open-modal data-service-name="Sprzątanie biur" class="shrink-0 mt-1 text-charcoal/40 group-hover:text-charcoal transition-all duration-300 group-hover:translate-x-1" aria-label="Zapytaj o usługę: Sprzątanie biur">
+                  <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                </button>
+              </div>
+              <button data-open-modal data-service-name="Sprzątanie biur" class="link-underline text-sm text-sage-dark mt-4 inline-flex items-center gap-1.5">
+                Zapytaj o usługę <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </article>
+
+            <!-- CTA Card -->
+            <article class="group reveal" style="transition-delay: 500ms;">
+              <div class="bg-charcoal aspect-[4/3] mb-5 flex items-center justify-center p-8 cursor-pointer" data-open-modal>
+                <p class="font-heading text-ivory text-2xl text-center leading-snug">Nie wiesz, którą usługę wybrać?</p>
+              </div>
+              <h3 class="font-heading text-2xl text-charcoal mb-2">Porozmawiaj z nami</h3>
+              <p class="text-charcoal/60 text-sm leading-relaxed mb-4">Pomożemy Ci dobrać odpowiedni zakres sprzątania.</p>
+              <button data-open-modal class="link-underline text-sm text-sage-dark inline-flex items-center gap-1.5">
+                Skontaktuj się <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Choose Us Section -->
+      <section class="py-24 lg:py-32 bg-beige">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <!-- Image -->
+            <div class="reveal reveal-left">
+              <div class="relative aspect-[4/5] overflow-hidden">
+                <img src="https://images.pexels.com/photos/19866414/pexels-photo-19866414.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Czyste, minimalistyczne wnętrze w stylu skandynawskim" class="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+
+            <!-- Features -->
+            <div class="reveal reveal-right">
+              <p class="text-xs tracking-[0.2em] uppercase text-sage-dark mb-4">Dlaczego Kasia_cleaning?</p>
+              <h2 class="font-heading text-4xl lg:text-5xl text-charcoal mb-10 text-balance leading-tight">
+                Czystość, którą widać. Obsługa, której można zaufać.
+              </h2>
+              <div class="space-y-8">
+                <div class="flex gap-6 group">
+                  <span class="font-heading text-3xl text-sage/60 shrink-0 w-12 step-number">01</span>
+                  <div>
+                    <h3 class="font-heading text-xl text-charcoal mb-1">Dokładność</h3>
+                    <p class="text-charcoal/60 text-sm leading-relaxed">Zwracamy uwagę na szczegóły, które robią różnicę.</p>
+                  </div>
+                </div>
+                <div class="flex gap-6 group">
+                  <span class="font-heading text-3xl text-sage/60 shrink-0 w-12 step-number">02</span>
+                  <div>
+                    <h3 class="font-heading text-xl text-charcoal mb-1">Sprawna komunikacja</h3>
+                    <p class="text-charcoal/60 text-sm leading-relaxed">Łatwy kontakt i szybkie ustalenie szczegółów.</p>
+                  </div>
+                </div>
+                <div class="flex gap-6 group">
+                  <span class="font-heading text-3xl text-sage/60 shrink-0 w-12 step-number">03</span>
+                  <div>
+                    <h3 class="font-heading text-xl text-charcoal mb-1">Dbałość o efekt</h3>
+                    <p class="text-charcoal/60 text-sm leading-relaxed">Naszym celem jest przestrzeń, do której chce się wracać.</p>
+                  </div>
+                </div>
+                <div class="flex gap-6 group">
+                  <span class="font-heading text-3xl text-sage/60 shrink-0 w-12 step-number">04</span>
+                  <div>
+                    <h3 class="font-heading text-xl text-charcoal mb-1">Indywidualne podejście</h3>
+                    <p class="text-charcoal/60 text-sm leading-relaxed">Zakres sprzątania można dopasować do potrzeb klienta.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Before / After Section -->
+      <section class="py-24 lg:py-32 bg-ivory">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10">
+          <div class="text-center mb-12 reveal">
+            <p class="text-xs tracking-[0.2em] uppercase text-sage-dark mb-4">Przed / Po</p>
+            <h2 class="font-heading text-4xl lg:text-5xl text-charcoal text-balance">Zobacz różnicę na własne oczy.</h2>
+          </div>
+
+          <div id="ba-slider" class="ba-slider aspect-[16/10] lg:aspect-[16/8] rounded-lg cursor-ew-resize reveal reveal-scale" tabIndex="0" role="slider" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="Przed i po sprzątaniu — przeciągnij, aby porównać">
+            <!-- Before -->
+            <img src="https://images.pexels.com/photos/3616756/pexels-photo-3616756.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Wnętrze przed sprzątaniem" class="ba-img" loading="lazy" />
+            <span class="ba-label left-4 z-10">PRZED</span>
+
+            <!-- After -->
+            <div class="ba-after-wrap" style="width: 50%;">
+              <img src="https://images.pexels.com/photos/7587773/pexels-photo-7587773.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Wnętrze po sprzątaniu" class="ba-img ba-after-img" loading="lazy" />
+              <span class="ba-label right-4" style="left: auto; right: 0.5rem;">PO</span>
+            </div>
+
+            <!-- Handle -->
+            <div class="ba-handle" style="left: 50%;">
+              <div class="ba-handle-grip">
+                <i data-lucide="move-horizontal" class="w-5 h-5 text-charcoal"></i>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-center text-charcoal/40 text-sm mt-6">Przeciągnij suwak, aby porównać zdjęcia</p>
+        </div>
+      </section>
+
+      <!-- Process / How It Works Section -->
+      <section id="jak-to-dziala" class="py-24 lg:py-32 bg-charcoal text-ivory">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10">
+          <div class="text-center mb-16 reveal">
+            <p class="text-xs tracking-[0.2em] uppercase text-sage-light mb-4">Proces</p>
+            <h2 class="font-heading text-4xl lg:text-5xl text-ivory">Jak to działa?</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6 relative">
+            <div class="hidden lg:block absolute top-12 left-0 right-0 h-px bg-ivory/15"></div>
+
+            <div class="relative reveal" style="transition-delay: 0ms;">
+              <div class="relative mb-6">
+                <span class="font-heading text-5xl text-ivory/90 step-number relative z-10 bg-charcoal pr-4">01</span>
+              </div>
+              <h3 class="font-heading text-xl text-ivory leading-snug max-w-[200px]">Kontaktujesz się z nami</h3>
+            </div>
+
+            <div class="relative reveal" style="transition-delay: 120ms;">
+              <div class="relative mb-6">
+                <span class="font-heading text-5xl text-ivory/90 step-number relative z-10 bg-charcoal pr-4">02</span>
+              </div>
+              <h3 class="font-heading text-xl text-ivory leading-snug max-w-[200px]">Ustalamy zakres sprzątania</h3>
+            </div>
+
+            <div class="relative reveal" style="transition-delay: 240ms;">
+              <div class="relative mb-6">
+                <span class="font-heading text-5xl text-ivory/90 step-number relative z-10 bg-charcoal pr-4">03</span>
+              </div>
+              <h3 class="font-heading text-xl text-ivory leading-snug max-w-[200px]">Wybieramy dogodny termin</h3>
+            </div>
+
+            <div class="relative reveal" style="transition-delay: 360ms;">
+              <div class="relative mb-6">
+                <span class="font-heading text-5xl text-ivory/90 step-number relative z-10 bg-charcoal pr-4">04</span>
+              </div>
+              <h3 class="font-heading text-xl text-ivory leading-snug max-w-[200px]">Cieszysz się czystym wnętrzem</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reviews Section -->
+      <section id="opinie" class="py-24 lg:py-32 bg-beige">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10">
+          <div class="text-center mb-12 reveal">
+            <p class="text-xs tracking-[0.2em] uppercase text-sage-dark mb-4">Opinie Google</p>
+            <h2 class="font-heading text-4xl lg:text-5xl text-charcoal mb-6 text-balance">Klienci już nam zaufali.</h2>
+            <div class="flex items-center justify-center gap-3 mb-2">
+              <div class="flex items-center gap-1">
+                <i data-lucide="star" class="w-5 h-5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                <i data-lucide="star" class="w-5 h-5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                <i data-lucide="star" class="w-5 h-5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                <i data-lucide="star" class="w-5 h-5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                <i data-lucide="star" class="w-5 h-5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+              </div>
+              <span class="font-heading text-2xl text-charcoal">5.0</span>
+              <span class="text-charcoal/50 text-sm">6 opinii Google</span>
+            </div>
+          </div>
+
+          <!-- Reviews Carousel -->
+          <div id="reviews-container" class="overflow-hidden">
+            <div id="reviews-track" class="carousel-track flex">
+              <!-- Review 1 -->
+              <div class="review-card shrink-0 px-3" style="width: 33.333%;">
+                <div class="bg-ivory border border-charcoal/5 p-8 lg:p-10 h-full flex flex-col">
+                  <i data-lucide="quote" class="w-7 h-7 text-sage/40 mb-4"></i>
+                  <div class="flex items-center gap-1 mb-4">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                  </div>
+                  <p class="text-charcoal/80 text-base leading-relaxed flex-1 italic">
+                    "Zdecydowanie polecamy! Skorzystaliśmy z usługi generalnego sprzątania i mieszkanie wygląda jak nowe. ❤️"
+                  </p>
+                  <p class="text-charcoal/30 text-xs mt-4 italic">Opinia Google — tłumaczenie</p>
+                  <div class="mt-6 pt-6 border-t border-charcoal/5">
+                    <p class="font-heading text-lg text-charcoal">Katarzyna Szopińska</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 2 -->
+              <div class="review-card shrink-0 px-3" style="width: 33.333%;">
+                <div class="bg-ivory border border-charcoal/5 p-8 lg:p-10 h-full flex flex-col">
+                  <i data-lucide="quote" class="w-7 h-7 text-sage/40 mb-4"></i>
+                  <div class="flex items-center gap-1 mb-4">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                  </div>
+                  <p class="text-charcoal/80 text-base leading-relaxed flex-1 italic">
+                    "Zdecydowanie polecam! :)"
+                  </p>
+                  <p class="text-charcoal/30 text-xs mt-4 italic">Opinia Google — tłumaczenie</p>
+                  <div class="mt-6 pt-6 border-t border-charcoal/5">
+                    <p class="font-heading text-lg text-charcoal">Amanda Kaźmierczak</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review 3 -->
+              <div class="review-card shrink-0 px-3" style="width: 33.333%;">
+                <div class="bg-ivory border border-charcoal/5 p-8 lg:p-10 h-full flex flex-col">
+                  <i data-lucide="quote" class="w-7 h-7 text-sage/40 mb-4"></i>
+                  <div class="flex items-center gap-1 mb-4">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-[#8a9a7b] text-[#8a9a7b]"></i>
+                  </div>
+                  <p class="text-charcoal/80 text-base leading-relaxed flex-1 italic">
+                    "Zdecydowanie polecam usługi Kasi i Vadima. Szybka realizacja, uczciwe ceny, łatwy kontakt oraz sprawne czyszczenie i naprawa szafek. To duet, któremu można zaufać!"
+                  </p>
+                  <p class="text-charcoal/30 text-xs mt-4 italic">Opinia Google — tłumaczenie</p>
+                  <div class="mt-6 pt-6 border-t border-charcoal/5">
+                    <p class="font-heading text-lg text-charcoal">Sonia</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="flex items-center justify-center gap-4 mt-8">
+            <button id="reviews-prev-btn" class="w-10 h-10 border border-charcoal/20 flex items-center justify-center text-charcoal/70 hover:border-charcoal hover:text-charcoal transition-all" aria-label="Poprzednia opinia">
+              <i data-lucide="chevron-left" class="w-4.5 h-4.5"></i>
+            </button>
+            <div id="reviews-dots" class="flex items-center gap-2"></div>
+            <button id="reviews-next-btn" class="w-10 h-10 border border-charcoal/20 flex items-center justify-center text-charcoal/70 hover:border-charcoal hover:text-charcoal transition-all" aria-label="Następna opinia">
+              <i data-lucide="chevron-right" class="w-4.5 h-4.5"></i>
+            </button>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+            <a href="https://www.google.com/search?q=Kasia_cleaning+Firma+sprz%C4%85taj%C4%85ca" target="_blank" rel="noopener noreferrer" class="btn-outline">
+              Zobacz opinie w Google <i data-lucide="external-link" class="w-4 h-4"></i>
+            </a>
+            <button data-open-modal class="btn-primary">Zamów sprzątanie</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section class="py-24 lg:py-32 bg-ivory">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10">
+          <div class="text-center mb-16 reveal">
+            <p class="text-xs tracking-[0.2em] uppercase text-sage-dark mb-4">Galeria</p>
+            <h2 class="font-heading text-4xl lg:text-5xl text-charcoal mb-4 text-balance">Zobacz efekt naszej pracy.</h2>
+            <p class="text-charcoal/60 text-lg">Porządek, świeżość i dbałość o szczegóły.</p>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 lg:grid-rows-3 gap-3 lg:gap-4 lg:h-[700px]">
+            <div class="gallery-item gallery-img relative overflow-hidden cursor-pointer reveal lg:col-span-2 lg:row-span-2" data-gallery-index="0" style="transition-delay: 0ms;">
+              <img src="https://images.pexels.com/photos/7587773/pexels-photo-7587773.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Jasny salon z otwartą kuchnią w stylu skandynawskim" loading="lazy" class="w-full h-full object-cover min-h-[180px] lg:min-h-0" />
+              <div class="absolute inset-0 bg-charcoal/0 hover:bg-charcoal/30 transition-colors duration-400 flex items-center justify-center">
+                <span class="opacity-0 hover:opacity-100 transition-opacity duration-300 text-ivory text-sm tracking-wide flex items-center gap-2">
+                  <i data-lucide="zoom-in" class="w-4.5 h-4.5"></i> Zobacz
+                </span>
+              </div>
+            </div>
+
+            <div class="gallery-item gallery-img relative overflow-hidden cursor-pointer reveal" data-gallery-index="1" style="transition-delay: 80ms;">
+              <img src="https://images.pexels.com/photos/6523269/pexels-photo-6523269.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Nowoczesna biała kuchnia z naturalnym światłem" loading="lazy" class="w-full h-full object-cover min-h-[180px] lg:min-h-0" />
+              <div class="absolute inset-0 bg-charcoal/0 hover:bg-charcoal/30 transition-colors duration-400 flex items-center justify-center">
+                <span class="opacity-0 hover:opacity-100 transition-opacity duration-300 text-ivory text-sm tracking-wide flex items-center gap-2">
+                  <i data-lucide="zoom-in" class="w-4.5 h-4.5"></i> Zobacz
+                </span>
+              </div>
+            </div>
+
+            <div class="gallery-item gallery-img relative overflow-hidden cursor-pointer reveal" data-gallery-index="2" style="transition-delay: 160ms;">
+              <img src="https://images.pexels.com/photos/7546608/pexels-photo-7546608.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Czysta, nowoczesna łazienka z prysznicem i beżowymi płytkami" loading="lazy" class="w-full h-full object-cover min-h-[180px] lg:min-h-0" />
+              <div class="absolute inset-0 bg-charcoal/0 hover:bg-charcoal/30 transition-colors duration-400 flex items-center justify-center">
+                <span class="opacity-0 hover:opacity-100 transition-opacity duration-300 text-ivory text-sm tracking-wide flex items-center gap-2">
+                  <i data-lucide="zoom-in" class="w-4.5 h-4.5"></i> Zobacz
+                </span>
+              </div>
+            </div>
+
+            <div class="gallery-item gallery-img relative overflow-hidden cursor-pointer reveal lg:col-span-2" data-gallery-index="3" style="transition-delay: 240ms;">
+              <img src="https://images.pexels.com/photos/7587772/pexels-photo-7587772.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Jasna sypialnia w stylu minimalistycznym" loading="lazy" class="w-full h-full object-cover min-h-[180px] lg:min-h-0" />
+              <div class="absolute inset-0 bg-charcoal/0 hover:bg-charcoal/30 transition-colors duration-400 flex items-center justify-center">
+                <span class="opacity-0 hover:opacity-100 transition-opacity duration-300 text-ivory text-sm tracking-wide flex items-center gap-2">
+                  <i data-lucide="zoom-in" class="w-4.5 h-4.5"></i> Zobacz
+                </span>
+              </div>
+            </div>
+
+            <div class="gallery-item gallery-img relative overflow-hidden cursor-pointer reveal" data-gallery-index="4" style="transition-delay: 320ms;">
+              <img src="https://images.pexels.com/photos/7587779/pexels-photo-7587779.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Przytulny salon z minimalistyczną kuchnią" loading="lazy" class="w-full h-full object-cover min-h-[180px] lg:min-h-0" />
+              <div class="absolute inset-0 bg-charcoal/0 hover:bg-charcoal/30 transition-colors duration-400 flex items-center justify-center">
+                <span class="opacity-0 hover:opacity-100 transition-opacity duration-300 text-ivory text-sm tracking-wide flex items-center gap-2">
+                  <i data-lucide="zoom-in" class="w-4.5 h-4.5"></i> Zobacz
+                </span>
+              </div>
+            </div>
+
+            <div class="gallery-item gallery-img relative overflow-hidden cursor-pointer reveal" data-gallery-index="5" style="transition-delay: 400ms;">
+              <img src="https://images.pexels.com/photos/6580220/pexels-photo-6580220.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Minimalistyczna kuchnia z gładkimi powierzchniami" loading="lazy" class="w-full h-full object-cover min-h-[180px] lg:min-h-0" />
+              <div class="absolute inset-0 bg-charcoal/0 hover:bg-charcoal/30 transition-colors duration-400 flex items-center justify-center">
+                <span class="opacity-0 hover:opacity-100 transition-opacity duration-300 text-ivory text-sm tracking-wide flex items-center gap-2">
+                  <i data-lucide="zoom-in" class="w-4.5 h-4.5"></i> Zobacz
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-12">
+            <button data-open-modal class="btn-primary">Zapytaj o sprzątanie</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final CTA Section -->
+      <section class="py-24 lg:py-36 bg-charcoal-dark text-ivory relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+          <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-sage blur-3xl"></div>
+          <div class="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-sage-light blur-3xl"></div>
+        </div>
+
+        <div class="max-w-3xl mx-auto px-6 text-center relative reveal">
+          <h2 class="font-heading text-4xl sm:text-5xl lg:text-6xl text-ivory mb-6 leading-tight text-balance">
+            Masz dość sprzątania?<br />
+            <span class="italic font-medium">Oddaj je nam.</span>
+          </h2>
+          <p class="text-ivory/70 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+            Skontaktuj się z nami i ustal zakres oraz dogodny termin sprzątania.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button data-open-modal class="btn-light">
+              Zamów sprzątanie <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <a href="tel:+48791688048" class="btn-ghost-light">
+              <i data-lucide="phone" class="w-4 h-4"></i> Zadzwoń: +48 791 688 048
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section id="faq" class="py-24 lg:py-32 bg-ivory">
+        <div class="max-w-3xl mx-auto px-6 lg:px-10">
+          <div class="text-center mb-12 reveal">
+            <p class="text-xs tracking-[0.2em] uppercase text-sage-dark mb-4">FAQ</p>
+            <h2 class="font-heading text-4xl lg:text-5xl text-charcoal text-balance">Najczęściej zadawane pytania</h2>
+          </div>
+
+          <div class="reveal">
+            <!-- FAQ 1 -->
+            <div class="accordion-item border-b border-charcoal/10">
+              <button class="accordion-header w-full flex items-center justify-between gap-4 py-6 text-left group" aria-expanded="true">
+                <span class="font-heading text-lg lg:text-xl text-charcoal">Jak mogę zamówić sprzątanie?</span>
+                <span class="shrink-0 text-charcoal/40 group-hover:text-charcoal transition-colors">
+                  <i data-lucide="plus" class="accordion-icon-plus hidden w-5 h-5"></i>
+                  <i data-lucide="minus" class="accordion-icon-minus w-5 h-5"></i>
+                </span>
+              </button>
+              <div class="accordion-content open">
+                <div class="accordion-inner">
+                  <p class="text-charcoal/60 text-base leading-relaxed pb-6 pr-10">
+                    Skontaktuj się z nami telefonicznie lub przez formularz, aby ustalić zakres usługi i termin.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="accordion-item border-b border-charcoal/10">
+              <button class="accordion-header w-full flex items-center justify-between gap-4 py-6 text-left group" aria-expanded="false">
+                <span class="font-heading text-lg lg:text-xl text-charcoal">Jak wygląda wycena?</span>
+                <span class="shrink-0 text-charcoal/40 group-hover:text-charcoal transition-colors">
+                  <i data-lucide="plus" class="accordion-icon-plus w-5 h-5"></i>
+                  <i data-lucide="minus" class="accordion-icon-minus hidden w-5 h-5"></i>
+                </span>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-inner">
+                  <p class="text-charcoal/60 text-base leading-relaxed pb-6 pr-10">
+                    Zakres i cena usługi zależą od rodzaju oraz zakresu sprzątania. Skontaktuj się z nami, aby ustalić szczegóły.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="accordion-item border-b border-charcoal/10">
+              <button class="accordion-header w-full flex items-center justify-between gap-4 py-6 text-left group" aria-expanded="false">
+                <span class="font-heading text-lg lg:text-xl text-charcoal">Czy można zamówić sprzątanie jednorazowe?</span>
+                <span class="shrink-0 text-charcoal/40 group-hover:text-charcoal transition-colors">
+                  <i data-lucide="plus" class="accordion-icon-plus w-5 h-5"></i>
+                  <i data-lucide="minus" class="accordion-icon-minus hidden w-5 h-5"></i>
+                </span>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-inner">
+                  <p class="text-charcoal/60 text-base leading-relaxed pb-6 pr-10">
+                    Zapytaj nas o dostępność wybranej usługi i dogodny termin.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="accordion-item border-b border-charcoal/10">
+              <button class="accordion-header w-full flex items-center justify-between gap-4 py-6 text-left group" aria-expanded="false">
+                <span class="font-heading text-lg lg:text-xl text-charcoal">Czy oferujecie sprzątanie regularne?</span>
+                <span class="shrink-0 text-charcoal/40 group-hover:text-charcoal transition-colors">
+                  <i data-lucide="plus" class="accordion-icon-plus w-5 h-5"></i>
+                  <i data-lucide="minus" class="accordion-icon-minus hidden w-5 h-5"></i>
+                </span>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-inner">
+                  <p class="text-charcoal/60 text-base leading-relaxed pb-6 pr-10">
+                    Skontaktuj się z nami, aby ustalić dostępne opcje.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="accordion-item border-b border-charcoal/10">
+              <button class="accordion-header w-full flex items-center justify-between gap-4 py-6 text-left group" aria-expanded="false">
+                <span class="font-heading text-lg lg:text-xl text-charcoal">Czy sprzątacie po remoncie?</span>
+                <span class="shrink-0 text-charcoal/40 group-hover:text-charcoal transition-colors">
+                  <i data-lucide="plus" class="accordion-icon-plus w-5 h-5"></i>
+                  <i data-lucide="minus" class="accordion-icon-minus hidden w-5 h-5"></i>
+                </span>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-inner">
+                  <p class="text-charcoal/60 text-base leading-relaxed pb-6 pr-10">
+                    Zapytaj o możliwość realizacji sprzątania po remoncie.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="accordion-item border-b border-charcoal/10">
+              <button class="accordion-header w-full flex items-center justify-between gap-4 py-6 text-left group" aria-expanded="false">
+                <span class="font-heading text-lg lg:text-xl text-charcoal">Jak szybko mogę umówić termin?</span>
+                <span class="shrink-0 text-charcoal/40 group-hover:text-charcoal transition-colors">
+                  <i data-lucide="plus" class="accordion-icon-plus w-5 h-5"></i>
+                  <i data-lucide="minus" class="accordion-icon-minus hidden w-5 h-5"></i>
+                </span>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-inner">
+                  <p class="text-charcoal/60 text-base leading-relaxed pb-6 pr-10">
+                    Skontaktuj się z nami, aby sprawdzić dostępne terminy.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-12">
+            <p class="text-charcoal/50 text-sm mb-4">Nie znalazłeś odpowiedzi?</p>
+            <button data-open-modal class="btn-primary">Zapytaj o sprzątanie</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="kontakt" class="py-24 lg:py-32 bg-beige">
+        <div class="max-w-editorial mx-auto px-6 lg:px-10 reveal">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+            <!-- Info -->
+            <div>
+              <p class="text-xs tracking-[0.2em] uppercase text-sage-dark mb-4">Kontakt</p>
+              <h2 class="font-heading text-4xl lg:text-5xl text-charcoal mb-6 text-balance leading-tight">
+                Porozmawiajmy o czystym domu.
+              </h2>
+              <p class="text-charcoal/60 text-lg mb-10 leading-relaxed max-w-md">
+                Skontaktuj się z nami telefonicznie lub przez formularz — pomożemy ustalić zakres i termin usługi.
+              </p>
+
+              <div class="space-y-6">
+                <a href="tel:+48791688048" class="flex items-center gap-4 group">
+                  <div class="w-12 h-12 rounded-full bg-charcoal flex items-center justify-center shrink-0 group-hover:bg-sage-dark transition-colors">
+                    <i data-lucide="phone" class="w-4.5 h-4.5 text-ivory"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-charcoal/40 uppercase tracking-wide">Telefon</p>
+                    <p class="font-heading text-xl text-charcoal group-hover:text-sage-dark transition-colors">+48 791 688 048</p>
+                  </div>
+                </a>
+
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-full bg-beige border border-charcoal/10 flex items-center justify-center shrink-0">
+                    <i data-lucide="clock" class="w-4.5 h-4.5 text-charcoal/60"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-charcoal/40 uppercase tracking-wide">Godziny</p>
+                    <p class="text-charcoal">Otwarte 24 godziny</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-full bg-beige border border-charcoal/10 flex items-center justify-center shrink-0">
+                    <i data-lucide="map-pin" class="w-4.5 h-4.5 text-charcoal/60"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-charcoal/40 uppercase tracking-wide">Obszar</p>
+                    <p class="text-charcoal">Polska</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="bg-ivory p-8 lg:p-10 border border-charcoal/5 shadow-sm">
+              <div id="contact-success-state" class="hidden text-center py-12">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-sage/20 mb-6">
+                  <i data-lucide="check" class="w-8 h-8 text-sage-dark"></i>
+                </div>
+                <h3 class="font-heading text-2xl text-charcoal mb-3">Dziękujemy!</h3>
+                <p class="text-charcoal/60 text-sm leading-relaxed max-w-xs mx-auto">
+                  Otrzymaliśmy Twoje zapytanie. Skontaktujemy się z Tobą w celu ustalenia szczegółów.
+                </p>
+              </div>
+
+              <form id="contact-form" class="space-y-5">
+                <h3 class="font-heading text-2xl text-charcoal mb-2">Formularz kontaktowy</h3>
+
+                <div>
+                  <label class="block text-sm text-charcoal/70 mb-1.5">Imię *</label>
+                  <input type="text" id="contact-name" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors" placeholder="Twoje imię" />
+                  <p id="err-contact-name" class="contact-error text-red-500 text-xs mt-1 hidden"></p>
+                </div>
+
+                <div>
+                  <label class="block text-sm text-charcoal/70 mb-1.5">Telefon *</label>
+                  <input type="tel" id="contact-phone" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors" placeholder="+48 ..." />
+                  <p id="err-contact-phone" class="contact-error text-red-500 text-xs mt-1 hidden"></p>
+                </div>
+
+                <div>
+                  <label class="block text-sm text-charcoal/70 mb-1.5">E-mail</label>
+                  <input type="email" id="contact-email" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors" placeholder="email@example.com" />
+                  <p id="err-contact-email" class="contact-error text-red-500 text-xs mt-1 hidden"></p>
+                </div>
+
+                <div>
+                  <label class="block text-sm text-charcoal/70 mb-1.5">Rodzaj usługi</label>
+                  <select id="contact-service" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors">
+                    <option value="">Wybierz usługę...</option>
+                    <option value="Mieszkanie">Mieszkanie</option>
+                    <option value="Dom">Dom</option>
+                    <option value="Biuro">Biuro</option>
+                    <option value="Po remoncie">Po remoncie</option>
+                    <option value="Przed / po wynajmie">Przed / po wynajmie</option>
+                    <option value="Inne">Inne</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-sm text-charcoal/70 mb-1.5">Wiadomość</label>
+                  <textarea id="contact-message" rows="3" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors resize-none" placeholder="Dodatkowe informacje..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary w-full">
+                  Wyślij zapytanie <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-ivory">
+      <div class="max-w-editorial mx-auto px-6 lg:px-10 pt-20 pb-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+          <div>
+            <h3 class="font-heading text-2xl mb-1">Kasia_cleaning</h3>
+            <p class="text-ivory/50 text-sm tracking-wide mb-4">Firma sprzątająca</p>
+            <p class="text-ivory/70 text-sm leading-relaxed max-w-xs">
+              Profesjonalne sprzątanie i więcej czasu dla Ciebie.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-xs tracking-[0.15em] uppercase text-ivory/40 mb-5">Nawigacja</h4>
+            <ul class="space-y-3">
+              <li><a href="uslugi.html" class="link-underline text-ivory/80 hover:text-ivory text-sm transition-colors">Usługi</a></li>
+              <li><a href="index.html#jak-to-dziala" class="link-underline text-ivory/80 hover:text-ivory text-sm transition-colors">Jak to działa</a></li>
+              <li><a href="opinie.html" class="link-underline text-ivory/80 hover:text-ivory text-sm transition-colors">Opinie</a></li>
+              <li><a href="o-nas.html" class="link-underline text-ivory/80 hover:text-ivory text-sm transition-colors">O nas</a></li>
+              <li><a href="faq.html" class="link-underline text-ivory/80 hover:text-ivory text-sm transition-colors">FAQ</a></li>
+              <li><a href="kontakt.html" class="link-underline text-ivory/80 hover:text-ivory text-sm transition-colors">Kontakt</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-xs tracking-[0.15em] uppercase text-ivory/40 mb-5">Kontakt</h4>
+            <ul class="space-y-4 text-sm">
+              <li>
+                <a href="tel:+48791688048" class="flex items-center gap-3 text-ivory/80 hover:text-ivory transition-colors">
+                  <i data-lucide="phone" class="w-4 h-4"></i> +48 791 688 048
+                </a>
+              </li>
+              <li class="flex items-center gap-3 text-ivory/80">
+                <i data-lucide="clock" class="w-4 h-4"></i> Otwarte 24 godziny
+              </li>
+              <li class="flex items-center gap-3 text-ivory/80">
+                <i data-lucide="map-pin" class="w-4 h-4"></i> Polska
+              </li>
+            </ul>
+            <button data-open-modal class="btn-light mt-6 text-xs px-5 py-2.5">Zamów sprzątanie</button>
+          </div>
+        </div>
+
+        <div class="border-t border-ivory/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p class="text-ivory/40 text-xs">© 2026 Kasia_cleaning</p>
+          <p class="text-ivory/40 text-xs">Kasia_cleaning Firma sprzątająca</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Floating Phone Widget -->
+    <a href="tel:+48791688048" class="sm:hidden fixed bottom-5 right-5 z-40 flex items-center gap-2 bg-charcoal text-ivory px-5 py-3.5 rounded-full shadow-lg call-pulse" aria-label="Zadzwoń teraz">
+      <i data-lucide="phone" class="w-4.5 h-4.5"></i>
+      <span class="text-sm font-medium">Zadzwoń</span>
+    </a>
+    <a href="tel:+48791688048" class="hidden sm:flex fixed bottom-6 right-6 z-40 items-center gap-2.5 bg-ivory/90 backdrop-blur-md border border-charcoal/10 text-charcoal px-4 py-3 rounded-full shadow-[0_4px_24px_rgba(43,40,38,0.12)] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(43,40,38,0.18)] transition-all duration-300" aria-label="Zadzwoń teraz">
+      <i data-lucide="phone" class="w-4 h-4 text-sage-dark"></i>
+      <span class="text-sm font-medium">+48 791 688 048</span>
+    </a>
+
+    <!-- Multi-Step Booking Modal Wizard -->
+    <div id="booking-modal" class="hidden fixed inset-0 z-[70] items-end sm:items-center justify-center modal-overlay">
+      <div id="modal-overlay-backdrop" class="absolute inset-0 bg-charcoal/60 backdrop-blur-sm"></div>
+
+      <div class="modal-panel relative bg-ivory w-full sm:max-w-2xl sm:rounded-2xl rounded-t-2xl max-h-[92vh] overflow-y-auto shadow-2xl">
+        <!-- Header -->
+        <div class="sticky top-0 z-10 bg-ivory/95 backdrop-blur-sm px-6 sm:px-10 pt-6 pb-4 border-b border-charcoal/5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 id="modal-header-title" class="font-heading text-xl sm:text-2xl text-charcoal">Zamów sprzątanie</h2>
+            <button id="modal-close-btn" class="text-charcoal/60 hover:text-charcoal transition-colors p-1" aria-label="Zamknij">
+              <i data-lucide="x" class="w-5.5 h-5.5"></i>
+            </button>
+          </div>
+          <div id="modal-progress-container" class="flex items-center gap-2">
+            <div class="modal-progress-bar h-0.5 flex-1 rounded-full transition-colors duration-500 bg-sage"></div>
+            <div class="modal-progress-bar h-0.5 flex-1 rounded-full transition-colors duration-500 bg-charcoal/10"></div>
+            <div class="modal-progress-bar h-0.5 flex-1 rounded-full transition-colors duration-500 bg-charcoal/10"></div>
+            <div class="modal-progress-bar h-0.5 flex-1 rounded-full transition-colors duration-500 bg-charcoal/10"></div>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="px-6 sm:px-10 py-8">
+          <!-- Step 0: Service -->
+          <div id="modal-step-0" class="modal-step-content">
+            <p class="text-xs tracking-[0.15em] uppercase text-sage-dark mb-2">Krok 1 z 4</p>
+            <h3 class="font-heading text-2xl text-charcoal mb-6">Jakiego sprzątania potrzebujesz?</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button class="modal-service-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-service="Mieszkanie"><span class="text-sm font-medium">Mieszkanie</span></button>
+              <button class="modal-service-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-service="Dom"><span class="text-sm font-medium">Dom</span></button>
+              <button class="modal-service-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-service="Biuro"><span class="text-sm font-medium">Biuro</span></button>
+              <button class="modal-service-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-service="Po remoncie"><span class="text-sm font-medium">Po remoncie</span></button>
+              <button class="modal-service-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-service="Przed / po wynajmie"><span class="text-sm font-medium">Przed / po wynajmie</span></button>
+              <button class="modal-service-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-service="Inne"><span class="text-sm font-medium">Inne</span></button>
+            </div>
+          </div>
+
+          <!-- Step 1: Area -->
+          <div id="modal-step-1" class="modal-step-content hidden">
+            <p class="text-xs tracking-[0.15em] uppercase text-sage-dark mb-2">Krok 2 z 4</p>
+            <h3 class="font-heading text-2xl text-charcoal mb-6">Jaka jest powierzchnia?</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button class="modal-area-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-area="do 40 m²"><span class="text-sm font-medium">do 40 m²</span></button>
+              <button class="modal-area-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-area="40–70 m²"><span class="text-sm font-medium">40–70 m²</span></button>
+              <button class="modal-area-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-area="70–100 m²"><span class="text-sm font-medium">70–100 m²</span></button>
+              <button class="modal-area-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-area="100–150 m²"><span class="text-sm font-medium">100–150 m²</span></button>
+              <button class="modal-area-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-area="150+ m²"><span class="text-sm font-medium">150+ m²</span></button>
+              <button class="modal-area-btn text-left px-5 py-4 border border-charcoal/15 text-charcoal/80 transition-all duration-300" data-area="Nie wiem"><span class="text-sm font-medium">Nie wiem</span></button>
+            </div>
+          </div>
+
+          <!-- Step 2: Schedule -->
+          <div id="modal-step-2" class="modal-step-content hidden">
+            <p class="text-xs tracking-[0.15em] uppercase text-sage-dark mb-2">Krok 3 z 4</p>
+            <h3 class="font-heading text-2xl text-charcoal mb-6">Kiedy chcesz zarezerwować usługę?</h3>
+            <div class="mb-6">
+              <label class="flex items-center gap-2 text-sm text-charcoal/70 mb-2">
+                <i data-lucide="calendar" class="w-4 h-4"></i> Data
+              </label>
+              <input type="date" id="modal-date-input" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors" />
+            </div>
+            <div>
+              <label class="flex items-center gap-2 text-sm text-charcoal/70 mb-3">
+                <i data-lucide="clock" class="w-4 h-4"></i> Godzina
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                <button class="modal-time-btn px-3 py-3 border border-charcoal/15 text-sm text-charcoal/80 transition-all duration-300" data-time="08:00 – 10:00">08:00 – 10:00</button>
+                <button class="modal-time-btn px-3 py-3 border border-charcoal/15 text-sm text-charcoal/80 transition-all duration-300" data-time="10:00 – 12:00">10:00 – 12:00</button>
+                <button class="modal-time-btn px-3 py-3 border border-charcoal/15 text-sm text-charcoal/80 transition-all duration-300" data-time="12:00 – 14:00">12:00 – 14:00</button>
+                <button class="modal-time-btn px-3 py-3 border border-charcoal/15 text-sm text-charcoal/80 transition-all duration-300" data-time="14:00 – 16:00">14:00 – 16:00</button>
+                <button class="modal-time-btn px-3 py-3 border border-charcoal/15 text-sm text-charcoal/80 transition-all duration-300" data-time="16:00 – 18:00">16:00 – 18:00</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Details -->
+          <div id="modal-step-3" class="modal-step-content hidden">
+            <p class="text-xs tracking-[0.15em] uppercase text-sage-dark mb-2">Krok 4 z 4</p>
+            <h3 class="font-heading text-2xl text-charcoal mb-6">Twoje dane</h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm text-charcoal/70 mb-1.5">Imię *</label>
+                <input type="text" id="modal-name-input" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors" placeholder="Twoje imię" />
+                <p id="err-modal-name" class="modal-input-error text-red-500 text-xs mt-1 hidden"></p>
+              </div>
+              <div>
+                <label class="block text-sm text-charcoal/70 mb-1.5">Telefon *</label>
+                <input type="tel" id="modal-phone-input" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors" placeholder="+48 ..." />
+                <p id="err-modal-phone" class="modal-input-error text-red-500 text-xs mt-1 hidden"></p>
+              </div>
+              <div>
+                <label class="block text-sm text-charcoal/70 mb-1.5">E-mail</label>
+                <input type="email" id="modal-email-input" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors" placeholder="email@example.com" />
+                <p id="err-modal-email" class="modal-input-error text-red-500 text-xs mt-1 hidden"></p>
+              </div>
+              <div>
+                <label class="block text-sm text-charcoal/70 mb-1.5">Wiadomość / dodatkowe informacje</label>
+                <textarea id="modal-msg-input" rows="3" class="w-full px-4 py-3 border border-charcoal/15 bg-white text-charcoal focus:border-sage focus:outline-none transition-colors resize-none" placeholder="Dodatkowe informacje..."></textarea>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="mt-6 p-4 bg-beige/60 border border-charcoal/5">
+              <p class="text-xs tracking-[0.12em] uppercase text-charcoal/40 mb-2">Podsumowanie</p>
+              <div class="text-sm text-charcoal/80 space-y-1">
+                <p>Usługa: <span id="summary-service" class="font-medium text-charcoal">Nie wybrano</span></p>
+                <p>Powierzchnia: <span id="summary-area" class="font-medium text-charcoal">Nie wybrano</span></p>
+                <p>Data: <span id="summary-date" class="font-medium text-charcoal">Nie wybrano</span></p>
+                <p>Godzina: <span id="summary-time" class="font-medium text-charcoal">Nie wybrano</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Success -->
+          <div id="modal-step-4" class="modal-step-content hidden text-center py-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-sage/20 mb-6">
+              <i data-lucide="check" class="w-8 h-8 text-sage-dark"></i>
+            </div>
+            <h3 class="font-heading text-3xl text-charcoal mb-3">Dziękujemy!</h3>
+            <p class="text-charcoal/70 max-w-sm mx-auto leading-relaxed">
+              Otrzymaliśmy Twoje zapytanie. Skontaktujemy się z Tobą w celu ustalenia szczegółów.
+            </p>
+            <button id="modal-success-close-btn" class="btn-primary mt-8">Zamknij</button>
+          </div>
+        </div>
+
+        <!-- Footer Navigation -->
+        <div id="modal-footer-nav" class="sticky bottom-0 bg-ivory border-t border-charcoal/5 px-6 sm:px-10 py-4 flex items-center justify-between">
+          <button id="modal-prev-btn" class="inline-flex items-center gap-2 text-sm transition-opacity text-charcoal/70 hover:text-charcoal opacity-0 pointer-events-none">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Wstecz
+          </button>
+          <button id="modal-next-btn" class="btn-primary">
+            <span id="modal-next-btn-text">Dalej</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery Lightbox Modal -->
+    <div id="gallery-lightbox" class="hidden fixed inset-0 z-[80] bg-charcoal/90 backdrop-blur-sm items-center justify-center modal-overlay">
+      <div id="lightbox-backdrop" class="absolute inset-0"></div>
+      <button id="lightbox-close" class="absolute top-5 right-5 text-ivory/80 hover:text-ivory transition-colors z-10" aria-label="Zamknij">
+        <i data-lucide="x" class="w-7 h-7"></i>
+      </button>
+      <button id="lightbox-prev" class="absolute left-3 sm:left-6 text-ivory/80 hover:text-ivory transition-colors z-10" aria-label="Poprzednie zdjęcie">
+        <i data-lucide="chevron-left" class="w-9 h-9"></i>
+      </button>
+      <img id="lightbox-img" src="" alt="" class="max-w-[90%] max-h-[85vh] object-contain modal-panel relative z-10" />
+      <button id="lightbox-next" class="absolute right-3 sm:right-6 text-ivory/80 hover:text-ivory transition-colors z-10" aria-label="Następne zdjęcie">
+        <i data-lucide="chevron-right" class="w-9 h-9"></i>
+      </button>
+      <p id="lightbox-counter" class="absolute bottom-5 left-1/2 -translate-x-1/2 text-ivory/50 text-sm z-10"></p>
+    </div>
+
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>
